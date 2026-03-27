@@ -22,3 +22,16 @@ resource "aws_security_group" "vpce_sg" {
     Name = "snowflake-vpce-sg"
   }
 }
+
+resource "aws_vpc_endpoint" "snowflake" {
+  vpc_id              = var.vpc_id
+  service_name        = var.service_name
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = var.subnet_ids
+  security_group_ids  = [aws_security_group.vpce_sg.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "snowflake-vpce"
+  }
+}
